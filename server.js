@@ -300,7 +300,11 @@ app.post('/messages', async (req, res) => {
       console.error('Error executing MySQL query:', err);
       res.status(500).json({ error: 'Failed to create message' });
     } else {
-      res.status(200).json({ message: 'Message created successfully' });
+      console.log('Received message:', message_content);
+      wsS.clients.forEach(client => {
+        console.log('Sending message:', message_content);
+        client.send(JSON.stringify(message_content));
+      });
     }
   });
 });
@@ -324,16 +328,8 @@ app.get('/messages', async (req, res) => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-wsS.on('connection', (socket, request) => {
+wsS.on('connection', () => {
   console.log('WebSocket client connected');
-
-  socket.on('message', message => {
-    console.log('Received message:', message);
-    wsS.clients.forEach(client => {
-      console.log('Sending message:', message);
-      client.send(JSON.stringify(message));
-    });
-  });
 });
 
 

@@ -143,11 +143,11 @@ export default function MessagesUser({ response }) {
       scrollToBottom();
     };
 
-    return () => {
-      if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-        ws.current.close();
-      }
-    };
+    // return () => {
+    //   if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+    //     ws.current.close();
+    //   }
+    // };
   }, [id, UsrID]);
 
   useEffect(() => {
